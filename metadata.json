@@ -1,0 +1,6 @@
+{
+  "name": "Escudo Digital — Missão Anti-Grooming",
+  "description": "Experiência educativa interativa e gamificada para crianças e adolescentes sobre prevenção e identificação do grooming virtual (aliciamento online).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

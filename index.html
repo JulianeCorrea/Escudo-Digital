@@ -1,0 +1,3402 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escudo Digital — Missão Anti-Grooming</title>
+  <meta name="description" content="Experiência educativa interativa e gamificada para crianças e adolescentes sobre prevenção e identificação do grooming virtual (aliciamento online)." />
+  <meta property="og:title" content="Escudo Digital — Missão Anti-Grooming" />
+  <meta property="og:description" content="Treinamento interativo para identificar sinais de aliciamento online, praticar respostas seguras e conhecer seus direitos." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-canvas: #090d1a;
+      --bg-surface: #11192e;
+      --bg-surface-2: #172340;
+      --bg-surface-hover: #1e2d52;
+      --border-hairline: rgba(148, 163, 184, 0.22);
+      --border-strong: rgba(56, 189, 248, 0.45);
+      --text-primary: #f8fafc;
+      --text-secondary: #d5e0ee;
+      --text-muted: #9eb0c9;
+      --accent-cyan: #22d3ee;
+      --accent-cyan-dim: rgba(34, 211, 238, 0.16);
+      --accent-violet: #a855f7;
+      --accent-violet-dim: rgba(168, 85, 247, 0.18);
+      --accent-pink: #f472b6;
+      --accent-pink-dim: rgba(244, 114, 182, 0.16);
+      --accent-orange: #fb923c;
+      --accent-orange-dim: rgba(251, 146, 60, 0.16);
+      --accent-safe: #4ade80;
+      --accent-safe-dim: rgba(74, 222, 128, 0.16);
+      --accent-danger: #fb7185;
+      --accent-danger-dim: rgba(251, 113, 133, 0.18);
+      --accent-warn: #fbbf24;
+      --accent-warn-dim: rgba(251, 191, 36, 0.18);
+      --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-canvas);
+      background-image:
+        radial-gradient(ellipse 75% 50% at 10% -5%, rgba(34, 211, 238, 0.18), transparent 60%),
+        radial-gradient(ellipse 65% 45% at 92% 6%, rgba(168, 85, 247, 0.18), transparent 55%),
+        radial-gradient(ellipse 60% 45% at 50% 48%, rgba(244, 114, 182, 0.08), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 85% 95%, rgba(74, 222, 128, 0.1), transparent 60%);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    button, input {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+    }
+
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 2px;
+    }
+
+    /* Fixed Top HUD */
+    .hud-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      height: 64px;
+      background: rgba(8, 12, 20, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .hud-inner {
+      max-width: 1200px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.125rem;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      color: var(--accent-cyan);
+      flex-shrink: 0;
+    }
+
+    .hud-progress-wrap {
+      flex: 1;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .hud-stats-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.8125rem;
+      white-space: nowrap;
+    }
+
+    .hud-rank {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--accent-cyan);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hud-xp-text {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .xp-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      overflow: hidden;
+    }
+
+    .xp-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22d3ee 0%, #818cf8 40%, #f472b6 75%, #4ade80 100%);
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.45);
+      transition: width 360ms var(--ease-out);
+    }
+
+    .hud-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-hud {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out), color 150ms var(--ease-out);
+    }
+
+    .btn-hud:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    .btn-hud.active {
+      border-color: rgba(34, 211, 238, 0.45);
+      color: var(--accent-cyan);
+    }
+
+    .medal-count-num {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      color: var(--accent-warn);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    .app-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 88px 20px 64px;
+    }
+
+    /* Hero Intro */
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1.35fr 0.9fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 32px;
+    }
+
+    .hero-panel {
+      background: linear-gradient(145deg, rgba(17, 25, 46, 0.96) 0%, rgba(23, 35, 64, 0.92) 55%, rgba(36, 23, 66, 0.88) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.32);
+      box-shadow: 0 18px 42px rgba(6, 12, 28, 0.55);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .kicker-line {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+      color: var(--text-primary);
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(90deg, #22d3ee 0%, #a855f7 52%, #f472b6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-lead {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      max-width: 62ch;
+      line-height: 1.65;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 22px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #22d3ee 0%, #38bdf8 55%, #818cf8 100%);
+      color: #06121e;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.9375rem;
+      white-space: nowrap;
+      box-shadow: 0 8px 20px rgba(34, 211, 238, 0.28);
+      transition: transform 150ms var(--ease-out), filter 150ms var(--ease-out);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      background: rgba(23, 35, 64, 0.9);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      white-space: nowrap;
+      transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(168, 85, 247, 0.16);
+      border-color: rgba(168, 85, 247, 0.65);
+    }
+
+    /* Agent Briefing Side Card */
+    .briefing-panel {
+      background: linear-gradient(155deg, rgba(17, 25, 46, 0.96) 0%, rgba(27, 22, 52, 0.92) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .briefing-title {
+      font-family: var(--font-display);
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .briefing-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .metric-cell {
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(56, 189, 248, 0.24);
+    }
+
+    .metric-cell:nth-child(2) {
+      border-color: rgba(244, 114, 182, 0.28);
+    }
+
+    .metric-val {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      line-height: 1.2;
+    }
+
+    .metric-cell:nth-child(2) .metric-val {
+      color: var(--accent-pink);
+    }
+
+    .metric-label {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .medals-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .medal-tile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      flex: 1 1 calc(50% - 4px);
+      min-width: 140px;
+      transition: border-color 200ms var(--ease-out), color 200ms var(--ease-out), background-color 200ms var(--ease-out);
+    }
+
+    .medal-tile.unlocked {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(244, 114, 182, 0.12));
+      border-color: rgba(251, 191, 36, 0.58);
+      color: var(--text-primary);
+    }
+
+    .medal-tile svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Mission Navigation Bar */
+    .mission-nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .mission-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-height: 64px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      text-align: left;
+      transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out), transform 150ms var(--ease-out);
+    }
+
+    .mission-tab[data-mission="1"] { --tab-color: #22d3ee; }
+    .mission-tab[data-mission="2"] { --tab-color: #fb7185; }
+    .mission-tab[data-mission="3"] { --tab-color: #a855f7; }
+    .mission-tab[data-mission="4"] { --tab-color: #fbbf24; }
+    .mission-tab[data-mission="5"] { --tab-color: #4ade80; }
+
+    .mission-tab:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--tab-color);
+      transform: translateY(-1px);
+    }
+
+    .mission-tab.active {
+      background: linear-gradient(145deg, var(--bg-surface-2), rgba(23, 35, 64, 0.98));
+      border-color: var(--tab-color);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .mission-tab.completed {
+      border-color: rgba(74, 222, 128, 0.55);
+    }
+
+    .mission-tab.active.completed {
+      border-color: var(--tab-color);
+    }
+
+    .mission-tab-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--tab-color);
+    }
+
+    .mission-tab-status {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-safe);
+    }
+
+    .mission-tab-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    /* Mission Stage Container */
+    .mission-stage {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      min-height: 480px;
+    }
+
+    .mission-panel {
+      display: none;
+      animation: fadeSlide 240ms var(--ease-out);
+    }
+
+    .mission-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mission-header {
+      padding-bottom: 22px;
+      margin-bottom: 26px;
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .mission-kicker {
+      font-size: 0.8125rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .mission-heading {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.375rem, 2.4vw, 1.875rem);
+      line-height: 1.2;
+      text-wrap: balance;
+      color: var(--text-primary);
+    }
+
+    .mission-subtitle {
+      font-size: 0.96875rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      max-width: 72ch;
+    }
+
+    .mission-progress-meta {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Mission 1: Definition & 3D Flip Cards */
+    .concept-banner {
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .concept-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-cyan-dim);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .concept-banner h3 {
+      font-family: var(--font-display);
+      font-size: 1.0625rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .concept-banner p {
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+      max-width: 75ch;
+    }
+
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .flip-card {
+      perspective: 1100px;
+      min-height: 210px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 210px;
+      transform-style: preserve-3d;
+      transition: transform 420ms var(--ease-out);
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .flip-front {
+      background: linear-gradient(145deg, #162447 0%, #1c2c54 100%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .flip-card[data-card="1"] .flip-front {
+      background: linear-gradient(145deg, #1b1e49 0%, #2a2461 100%);
+      border-color: rgba(168, 85, 247, 0.42);
+    }
+
+    .flip-card[data-card="2"] .flip-front {
+      background: linear-gradient(145deg, #132a40 0%, #163b4c 100%);
+      border-color: rgba(45, 212, 191, 0.4);
+    }
+
+    .flip-card[data-card="3"] .flip-front {
+      background: linear-gradient(145deg, #251d42 0%, #37224d 100%);
+      border-color: rgba(244, 114, 182, 0.4);
+    }
+
+    .flip-card:hover .flip-front {
+      border-color: var(--accent-cyan);
+      filter: brightness(1.08);
+    }
+
+    .flip-back {
+      background: linear-gradient(145deg, #2a1226 0%, #3a162b 100%);
+      border: 1px solid rgba(251, 113, 133, 0.6);
+      transform: rotateY(180deg);
+    }
+
+    .face-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .face-label.illusion {
+      color: var(--accent-cyan);
+    }
+
+    .face-label.reality {
+      color: var(--accent-danger);
+    }
+
+    .flip-card-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: var(--text-primary);
+    }
+
+    .flip-card-desc {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .flip-hint {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Mission 2: Radar de Red Flags (Main Focus) */
+    .radar-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 32px;
+    }
+
+    .stage-selector-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stage-btn {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 60px;
+      transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+    }
+
+    .stage-btn[data-stage="0"] { --stage-tint: #22d3ee; }
+    .stage-btn[data-stage="1"] { --stage-tint: #a855f7; }
+    .stage-btn[data-stage="2"] { --stage-tint: #fbbf24; }
+    .stage-btn[data-stage="3"] { --stage-tint: #fb923c; }
+    .stage-btn[data-stage="4"] { --stage-tint: #fb7185; }
+
+    .stage-btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--stage-tint, var(--border-strong));
+    }
+
+    .stage-btn.active {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(168, 85, 247, 0.12));
+      border-color: var(--stage-tint, var(--accent-cyan));
+    }
+
+    .stage-btn-num {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--stage-tint, var(--accent-cyan));
+      margin-bottom: 2px;
+    }
+
+    .stage-btn-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .stage-inspected-mark {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-safe);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .stage-uninspected-mark {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .stage-detail-card {
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .stage-detail-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .stage-detail-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .danger-level-text {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--accent-danger);
+    }
+
+    .stage-tactic-summary {
+      font-size: 0.96875rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .quotes-block-title {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--accent-warn);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quotes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quote-item {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(8, 12, 20, 0.55);
+      border: 1px solid rgba(251, 191, 36, 0.24);
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      font-style: italic;
+    }
+
+    .trap-reveal-box {
+      padding: 18px;
+      border-radius: var(--radius-sm);
+      background: rgba(251, 113, 133, 0.08);
+      border: 1px solid rgba(251, 113, 133, 0.35);
+    }
+
+    .trap-reveal-box.hidden {
+      display: none;
+    }
+
+    .trap-reveal-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--accent-danger);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .trap-reveal-text {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .trap-defense-text {
+      font-size: 0.875rem;
+      color: var(--accent-safe);
+      font-weight: 600;
+    }
+
+    /* Red Flag Scanner Mini-Game in Mission 2 */
+    .scanner-section {
+      padding-top: 28px;
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    .scanner-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .scanner-title {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+
+    .scanner-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .scanner-card {
+      background: linear-gradient(155deg, rgba(20, 29, 54, 0.96), rgba(29, 24, 56, 0.94));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .scanner-card:nth-child(2) {
+      border-color: rgba(168, 85, 247, 0.36);
+    }
+
+    .scanner-card:nth-child(3) {
+      border-color: rgba(251, 146, 60, 0.36);
+    }
+
+    .scanner-card:nth-child(4) {
+      border-color: rgba(244, 114, 182, 0.36);
+    }
+
+    .scanner-msg {
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: rgba(8, 12, 24, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+    }
+
+    .scanner-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .scanner-opt-btn {
+      min-height: 42px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+      transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+    }
+
+    .scanner-opt-btn:hover:not(:disabled) {
+      background: var(--bg-surface-hover);
+      border-color: var(--accent-cyan);
+      color: var(--text-primary);
+    }
+
+    .scanner-opt-btn.correct {
+      background: var(--accent-safe-dim);
+      border-color: var(--accent-safe);
+      color: var(--accent-safe);
+    }
+
+    .scanner-opt-btn.wrong {
+      background: var(--accent-danger-dim);
+      border-color: var(--accent-danger);
+      color: var(--accent-danger);
+    }
+
+    .scanner-feedback {
+      font-size: 0.84375rem;
+      line-height: 1.5;
+      min-height: 20px;
+    }
+
+    /* Mission 3: Interactive Chat Simulator */
+    .chat-sim-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .scenario-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .scenario-tab {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      text-align: left;
+      min-height: 60px;
+      transition: border-color 150ms var(--ease-out), background-color 150ms var(--ease-out);
+    }
+
+    .scenario-tab:hover {
+      background: var(--bg-surface-hover);
+    }
+
+    .scenario-tab.active {
+      border-color: var(--accent-cyan);
+      background: rgba(34, 211, 238, 0.08);
+    }
+
+    .scenario-tab-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .scenario-tab-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+    }
+
+    .chat-window {
+      background: linear-gradient(180deg, #0b1224 0%, #10152b 100%);
+      border: 1px solid rgba(168, 85, 247, 0.38);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-topbar {
+      padding: 14px 18px;
+      background: linear-gradient(90deg, rgba(23, 35, 64, 0.96), rgba(37, 25, 66, 0.94));
+      border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .chat-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(244, 114, 182, 0.25));
+      border: 1px solid rgba(244, 114, 182, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      color: #f9a8d4;
+      flex-shrink: 0;
+    }
+
+    .chat-username {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+    }
+
+    .chat-platform {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .chat-messages {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 220px;
+    }
+
+    .bubble {
+      max-width: 82%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+
+    .bubble-stranger {
+      align-self: flex-start;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      color: var(--text-primary);
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble-player {
+      align-self: flex-end;
+      background: rgba(34, 211, 238, 0.14);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      color: var(--text-primary);
+      border-bottom-right-radius: 4px;
+    }
+
+    .bubble-time {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .chat-choices {
+      padding: 18px 20px;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .choices-prompt {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .choice-btn {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      text-align: left;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+    }
+
+    .choice-btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--accent-cyan);
+    }
+
+    .choice-btn.selected-safe {
+      background: var(--accent-safe-dim);
+      border-color: var(--accent-safe);
+    }
+
+    .choice-btn.selected-risk {
+      background: var(--accent-danger-dim);
+      border-color: var(--accent-danger);
+    }
+
+    .chat-feedback {
+      margin-top: 6px;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      display: none;
+    }
+
+    .chat-feedback.visible {
+      display: block;
+    }
+
+    .chat-feedback.safe {
+      background: var(--accent-safe-dim);
+      border: 1px solid rgba(74, 222, 128, 0.4);
+      color: var(--text-primary);
+    }
+
+    .chat-feedback.risk {
+      background: var(--accent-danger-dim);
+      border: 1px solid rgba(251, 113, 133, 0.45);
+      color: var(--text-primary);
+    }
+
+    .chat-feedback-label {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.875rem;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* Mission 4: Why Never Hide + Help Channels */
+    .fears-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .fear-card {
+      background: linear-gradient(145deg, rgba(25, 31, 61, 0.95), rgba(37, 25, 62, 0.92));
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: left;
+      transition: border-color 150ms var(--ease-out), background-color 150ms var(--ease-out);
+    }
+
+    .fear-card[data-fear="1"] {
+      border-color: rgba(244, 114, 182, 0.38);
+    }
+
+    .fear-card[data-fear="2"] {
+      border-color: rgba(251, 113, 133, 0.42);
+    }
+
+    .fear-card:hover {
+      border-color: var(--accent-cyan);
+    }
+
+    .fear-card.revealed {
+      border-color: rgba(74, 222, 128, 0.55);
+      background: linear-gradient(145deg, rgba(16, 48, 42, 0.65), rgba(19, 36, 56, 0.8));
+    }
+
+    .fear-myth {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    .fear-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-warn);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .fear-card.revealed .fear-tag {
+      color: var(--accent-safe);
+    }
+
+    .fear-truth {
+      font-size: 0.9125rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      display: none;
+    }
+
+    .fear-card.revealed .fear-truth {
+      display: block;
+    }
+
+    .core-truth-callout {
+      padding: 22px 24px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.14) 0%, rgba(168, 85, 247, 0.14) 55%, rgba(74, 222, 128, 0.12) 100%);
+      border: 1px solid rgba(34, 211, 238, 0.45);
+      margin-bottom: 28px;
+    }
+
+    .core-truth-callout h3 {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+    }
+
+    .core-truth-callout p {
+      color: var(--text-primary);
+      font-size: 0.96875rem;
+    }
+
+    .help-channels-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .channel-card {
+      background: linear-gradient(155deg, rgba(16, 33, 58, 0.95), rgba(20, 26, 48, 0.95));
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .channel-card:nth-child(2) {
+      background: linear-gradient(155deg, rgba(36, 20, 58, 0.95), rgba(22, 24, 50, 0.95));
+      border-color: rgba(244, 114, 182, 0.42);
+    }
+
+    .channel-card:nth-child(2) .channel-contact {
+      color: var(--accent-pink);
+    }
+
+    .channel-card:nth-child(3) {
+      background: linear-gradient(155deg, rgba(16, 42, 40, 0.95), rgba(19, 28, 48, 0.95));
+      border-color: rgba(74, 222, 128, 0.42);
+    }
+
+    .channel-card:nth-child(3) .channel-contact {
+      color: var(--accent-safe);
+    }
+
+    .channel-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.0625rem;
+      color: var(--text-primary);
+    }
+
+    .channel-contact {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .channel-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .emergency-checklist {
+      background: var(--bg-surface-2);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+    }
+
+    .emergency-checklist h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: var(--accent-warn);
+    }
+
+    .check-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .check-step-btn {
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      text-align: left;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      min-height: 54px;
+      transition: border-color 150ms var(--ease-out), background-color 150ms var(--ease-out);
+    }
+
+    .check-step-btn.checked {
+      background: var(--accent-safe-dim);
+      border-color: rgba(74, 222, 128, 0.55);
+      color: var(--text-primary);
+    }
+
+    /* Mission 5: Brazilian Laws & Digital Guardian Certificate */
+    .laws-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .law-card {
+      background: linear-gradient(155deg, rgba(16, 33, 60, 0.95), rgba(20, 26, 48, 0.95));
+      border: 1px solid rgba(34, 211, 238, 0.38);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .law-card:nth-child(2) {
+      background: linear-gradient(155deg, rgba(46, 20, 44, 0.95), rgba(24, 22, 48, 0.95));
+      border-color: rgba(251, 113, 133, 0.42);
+    }
+
+    .law-card:nth-child(2) .law-code {
+      color: var(--accent-pink);
+    }
+
+    .law-card:nth-child(3) {
+      background: linear-gradient(155deg, rgba(28, 22, 58, 0.95), rgba(18, 28, 52, 0.95));
+      border-color: rgba(168, 85, 247, 0.45);
+    }
+
+    .law-card:nth-child(3) .law-code {
+      color: var(--accent-warn);
+    }
+
+    .law-code {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .law-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.0625rem;
+      color: var(--text-primary);
+    }
+
+    .law-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .certificate-builder {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+      padding-top: 26px;
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    .cert-form-box {
+      background: var(--bg-surface-2);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cert-form-box h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1875rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .text-input {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      font-size: 0.96875rem;
+    }
+
+    .emblem-picker {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .emblem-btn {
+      min-height: 44px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      transition: border-color 150ms var(--ease-out), color 150ms var(--ease-out);
+    }
+
+    .emblem-btn.active {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: var(--accent-cyan-dim);
+    }
+
+    .certificate-preview {
+      position: relative;
+      background: linear-gradient(135deg, #0d1d3c 0%, #241547 52%, #132c45 100%);
+      border: 2px solid rgba(34, 211, 238, 0.6);
+      box-shadow: 0 14px 36px rgba(34, 211, 238, 0.14);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      overflow: hidden;
+    }
+
+    .cert-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-hairline);
+      padding-bottom: 14px;
+    }
+
+    .cert-org {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.9375rem;
+      background: linear-gradient(90deg, #22d3ee, #f472b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cert-serial {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .cert-body {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .cert-badge-seal {
+      width: 78px;
+      height: 78px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.22), rgba(168, 85, 247, 0.24));
+      border: 1px solid rgba(34, 211, 238, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-cyan);
+      flex-shrink: 0;
+    }
+
+    .cert-agent-label {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .cert-agent-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+      color: var(--text-primary);
+      line-height: 1.15;
+      word-break: break-word;
+    }
+
+    .cert-rank-line {
+      font-size: 0.9rem;
+      color: var(--accent-safe);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .cert-footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-hairline);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    /* Bottom Navigation inside Mission */
+    .mission-footer-nav {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Toast Notification for XP & Medals */
+    .toast-stack {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 70;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast-item {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface-2);
+      border: 1px solid rgba(34, 211, 238, 0.5);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 220ms var(--ease-out);
+    }
+
+    .toast-item.medal {
+      border-color: rgba(251, 191, 36, 0.65);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Site Footer */
+    .site-footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 20px 44px;
+      border-top: 1px solid var(--border-hairline);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+      }
+      .mission-nav {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .radar-layout {
+        grid-template-columns: 1fr;
+      }
+      .chat-sim-layout {
+        grid-template-columns: 1fr;
+      }
+      .fears-grid, .help-channels-grid, .laws-grid, .check-items {
+        grid-template-columns: 1fr 1fr;
+      }
+      .certificate-builder {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .hud-header {
+        height: 58px;
+      }
+      .hud-inner {
+        padding: 0 12px;
+        gap: 10px;
+      }
+      .brand-text {
+        display: none;
+      }
+      .btn-hud-label {
+        display: none;
+      }
+      .app-main {
+        padding: 76px 14px 48px;
+      }
+      .hero-panel, .briefing-panel, .mission-stage {
+        padding: 20px;
+      }
+      .mission-nav {
+        grid-template-columns: 1fr 1fr;
+      }
+      .flip-grid, .scanner-grid, .fears-grid, .help-channels-grid, .laws-grid, .check-items {
+        grid-template-columns: 1fr;
+      }
+      .scanner-options {
+        grid-template-columns: 1fr;
+      }
+      .cert-body {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        color: #0f172a;
+      }
+      .hud-header, .hero-section, .mission-nav, .mission-header, .laws-grid, .cert-form-box, .mission-footer-nav, .site-footer, .toast-stack {
+        display: none !important;
+      }
+      .app-main, .mission-stage, .certificate-builder {
+        padding: 0;
+        margin: 0;
+        border: none;
+        display: block;
+      }
+      .certificate-preview {
+        background: #ffffff;
+        color: #0f172a;
+        border: 2px solid #0f172a;
+      }
+      .cert-agent-name, .cert-org {
+        color: #0f172a;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Top HUD -->
+  <header class="hud-header" role="banner">
+    <div class="hud-inner">
+      <a href="#topo" class="brand" aria-label="Escudo Digital Início">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span class="brand-text">Escudo Digital</span>
+      </a>
+
+      <div class="hud-progress-wrap" aria-label="Progresso do agente">
+        <div class="hud-stats-row">
+          <span class="hud-rank" id="hudRank">Nível 1 · Recruta</span>
+          <span class="hud-xp-text" id="hudXpText">0 / 550 XP</span>
+        </div>
+        <div class="xp-track" role="progressbar" aria-valuemin="0" aria-valuemax="550" aria-valuenow="0" id="xpProgressBar">
+          <div class="xp-fill" id="xpFill"></div>
+        </div>
+      </div>
+
+      <div class="hud-actions">
+        <button type="button" class="btn-hud" id="btnMedalsJump" title="Ver suas medalhas">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="8" r="6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+          <span class="medal-count-num" id="hudMedalCount">0/6</span>
+          <span class="btn-hud-label">Medalhas</span>
+        </button>
+
+        <button type="button" class="btn-hud active" id="btnSoundToggle" aria-pressed="true" title="Ativar ou silenciar efeitos sonoros">
+          <svg id="soundIconOn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <svg id="soundIconOff" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="22" y1="9" x2="16" y2="15"/>
+            <line x1="16" y1="9" x2="22" y2="15"/>
+          </svg>
+          <span class="btn-hud-label" id="soundLabel">Som On</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main" id="topo">
+    <!-- Hero & Agent Status -->
+    <section class="hero-section" aria-label="Boas-vindas ao treinamento">
+      <div class="hero-panel">
+        <div>
+          <p class="kicker-line">Treinamento Interativo de Segurança Digital · Brasil</p>
+          <h1 class="hero-title">Aprenda a detectar armadilhas digitais e proteja seu espaço como <span class="highlight">Agente Cyber</span>.</h1>
+        </div>
+        <p class="hero-lead">
+          Jogos online, chats e redes sociais são lugares incríveis para se divertir, mas exigem atenção. Aqui você vai treinar seu olhar para reconhecer perfis suspeitos, saber como agir diante de chantagens e descobrir quem está do seu lado na lei e na vida real.
+        </p>
+        <div class="hero-cta-row">
+          <button type="button" class="btn-primary" id="btnStartTraining">
+            Começar Missão 1
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </button>
+          <button type="button" class="btn-secondary" id="btnJumpRadar">
+            Ir direto ao Radar de Sinais
+          </button>
+        </div>
+      </div>
+
+      <aside class="briefing-panel" id="painelMedalhas" aria-label="Painel de conquistas">
+        <div>
+          <h2 class="briefing-title">Resumo do Agente</h2>
+          <p class="kicker-line" style="margin-top:4px;">Complete as 5 missões para subir de patente</p>
+        </div>
+
+        <div class="briefing-metrics">
+          <div class="metric-cell">
+            <div class="metric-val" id="briefingMissions">0 / 5</div>
+            <div class="metric-label">Missões concluídas</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-val" id="briefingXp">0 XP</div>
+            <div class="metric-label">Experiência total</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="kicker-line" style="margin-bottom:8px;">Conquistas desbloqueáveis</div>
+          <div class="medals-strip" id="medalsStrip"></div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- 5 Missions Navigation -->
+    <nav class="mission-nav" aria-label="Navegação das missões">
+      <button type="button" class="mission-tab active" data-mission="1">
+        <div class="mission-tab-top">
+          <span>Missão 01</span>
+          <span class="mission-tab-status" id="tabStatus1">Aberta</span>
+        </div>
+        <div class="mission-tab-title">O Disfarce Digital</div>
+      </button>
+
+      <button type="button" class="mission-tab" data-mission="2">
+        <div class="mission-tab-top">
+          <span>Missão 02</span>
+          <span class="mission-tab-status" id="tabStatus2">Aberta</span>
+        </div>
+        <div class="mission-tab-title">Radar de Sinais</div>
+      </button>
+
+      <button type="button" class="mission-tab" data-mission="3">
+        <div class="mission-tab-top">
+          <span>Missão 03</span>
+          <span class="mission-tab-status" id="tabStatus3">Aberta</span>
+        </div>
+        <div class="mission-tab-title">Simulador de Chat</div>
+      </button>
+
+      <button type="button" class="mission-tab" data-mission="4">
+        <div class="mission-tab-top">
+          <span>Missão 04</span>
+          <span class="mission-tab-status" id="tabStatus4">Aberta</span>
+        </div>
+        <div class="mission-tab-title">Nunca Esconda</div>
+      </button>
+
+      <button type="button" class="mission-tab" data-mission="5">
+        <div class="mission-tab-top">
+          <span>Missão 05</span>
+          <span class="mission-tab-status" id="tabStatus5">Aberta</span>
+        </div>
+        <div class="mission-tab-title">Escudo da Lei</div>
+      </button>
+    </nav>
+
+    <!-- Active Mission Stage -->
+    <section class="mission-stage" aria-live="polite">
+
+      <!-- MISSÃO 1 -->
+      <article class="mission-panel active" id="mission-1">
+        <div class="mission-header">
+          <div>
+            <div class="mission-kicker">Missão 01 · Conceito Fundamental</div>
+            <h2 class="mission-heading">O que é Grooming Virtual? (O Disfarce Digital)</h2>
+            <p class="mission-subtitle">
+              Grooming (ou aliciamento online) acontece quando um adulto cria uma conexão emocional e de confiança com uma criança ou adolescente pela internet com intenção de abuso, exploração sexual ou extorsão.
+            </p>
+          </div>
+          <div class="mission-progress-meta" id="m1Progress">0 / 4 cartas investigadas</div>
+        </div>
+
+        <div class="concept-banner">
+          <div class="concept-icon-box" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Por que ele funciona como um disfarce?</h3>
+            <p>
+              Na vida real, um estranho mal-intencionado não consegue fingir que tem 12 anos. Na internet, atrás de uma tela, ele pode usar avatares, fotos falsas, gírias de jogos e muita paciência para parecer o seu "melhor amigo" antes de mostrar quem realmente é.
+            </p>
+          </div>
+        </div>
+
+        <p class="kicker-line" style="margin-bottom:14px;">Clique em cada carta abaixo para virar e revelar o que existe por trás do disfarce (+15 XP por carta):</p>
+
+        <div class="flip-grid" id="flipGrid">
+          <button type="button" class="flip-card" data-card="0" aria-pressed="false">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="face-label illusion"><span>O QUE PARECE SER</span><span>Carta 1/4</span></div>
+                <div class="flip-card-title">“Um jogador da minha idade que curte os mesmos mapas.”</div>
+                <div class="flip-card-desc">Usa foto de anime ou influencer jovem, conhece todos os memes e entra sempre no mesmo horário que você.</div>
+                <div class="flip-hint">Clique para revelar a verdade</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="face-label reality"><span>O QUE REALMENTE É</span><span>Disfarce</span></div>
+                <div class="flip-card-title">Perfil falso criado para gerar identificação rápida.</div>
+                <div class="flip-card-desc">Adultos mal-intencionados estudam jogos e músicas populares entre jovens justamente para parecerem iguais e ganhar sua confiança sem levantar suspeitas.</div>
+                <div class="flip-hint">Investigado (+15 XP)</div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="flip-card" data-card="1" aria-pressed="false">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="face-label illusion"><span>O QUE PARECE SER</span><span>Carta 2/4</span></div>
+                <div class="flip-card-title">“Um amigo super generoso dando skins e Robux de graça.”</div>
+                <div class="flip-card-desc">Diz que tem dinheiro sobrando ou códigos promocionais e quer presentear você porque você “jogou muito bem”.</div>
+                <div class="flip-hint">Clique para revelar a verdade</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="face-label reality"><span>O QUE REALMENTE É</span><span>Isca de Dívida</span></div>
+                <div class="flip-card-title">Moeda de troca para cobrar favores depois.</div>
+                <div class="flip-card-desc">O presente serve para fazer você sentir gratidão ou obrigação. Mais tarde, ele usa isso para exigir fotos, chamadas de vídeo ou encontros.</div>
+                <div class="flip-hint">Investigado (+15 XP)</div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="flip-card" data-card="2" aria-pressed="false">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="face-label illusion"><span>O QUE PARECE SER</span><span>Carta 3/4</span></div>
+                <div class="flip-card-title">“Alguém que me entende melhor do que meus pais.”</div>
+                <div class="flip-card-desc">Concorda com todas as suas reclamações de casa ou da escola e diz que sua família é “controladora”.</div>
+                <div class="flip-hint">Clique para revelar a verdade</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="face-label reality"><span>O QUE REALMENTE É</span><span>Isolamento</span></div>
+                <div class="flip-card-title">Corte de proteção para deixar você sozinho(a).</div>
+                <div class="flip-card-desc">Se o aliciador convencer você de que seus pais são inimigos, ele garante que você não pedirá ajuda quando ele cruzar os limites.</div>
+                <div class="flip-hint">Investigado (+15 XP)</div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="flip-card" data-card="3" aria-pressed="false">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="face-label illusion"><span>O QUE PARECE SER</span><span>Carta 4/4</span></div>
+                <div class="flip-card-title">“Só uma brincadeira ou desafio de confiança.”</div>
+                <div class="flip-card-desc">Pede uma selfie no espelho, pergunta coisas íntimas como “zoeira” ou envia imagens estranhas dizendo que é normal.</div>
+                <div class="flip-hint">Clique para revelar a verdade</div>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="face-label reality"><span>O QUE REALMENTE É</span><span>Armadilha de Chantagem</span></div>
+                <div class="flip-card-title">Teste de limites para iniciar extorsão.</div>
+                <div class="flip-card-desc">Cada limite quebrado abre espaço para pedidos piores. Uma única foto pode ser salva e usada para ameaçar você depois.</div>
+                <div class="flip-hint">Investigado (+15 XP)</div>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <div class="mission-footer-nav">
+          <span class="kicker-line" id="m1StatusNote">Investigue as 4 cartas para concluir a Missão 01.</span>
+          <button type="button" class="btn-primary" data-go-mission="2">
+            Avançar para Missão 02: Radar de Sinais
+          </button>
+        </div>
+      </article>
+
+      <!-- MISSÃO 2 (FOCO PRINCIPAL) -->
+      <article class="mission-panel" id="mission-2">
+        <div class="mission-header">
+          <div>
+            <div class="mission-kicker">Missão 02 · Foco Principal · Detector de Red Flags</div>
+            <h2 class="mission-heading">Radar de Sinais e os 5 Estágios do Aliciamento</h2>
+            <p class="mission-subtitle">
+              Quem pratica grooming raramente começa com ameaças. O processo segue estágios psicológicos pensados para baixar sua guarda passo a passo. Inspecione todos os 5 estágios no Detector abaixo.
+            </p>
+          </div>
+          <div class="mission-progress-meta" id="m2Progress">0 / 5 armadilhas inspecionadas</div>
+        </div>
+
+        <div class="radar-layout">
+          <div class="stage-selector-list" id="stageSelectorList" role="tablist" aria-label="Estágios do aliciamento"></div>
+
+          <div class="stage-detail-card" id="stageDetailCard">
+            <div class="stage-detail-head">
+              <div>
+                <div class="mission-kicker" id="stageDetailCode">Estágio 1 de 5</div>
+                <h3 class="stage-detail-title" id="stageDetailTitle">Aproximação e Bajulação Excessiva (“Love Bombing”)</h3>
+              </div>
+              <span class="danger-level-text" id="stageDangerBadge">ALERTA · FASE INICIAL</span>
+            </div>
+
+            <p class="stage-tactic-summary" id="stageTacticSummary"></p>
+
+            <div>
+              <div class="quotes-block-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                  <path d="M12 9v4"/><path d="M12 17h.01"/>
+                </svg>
+                Exemplos reais de frases usadas nessa fase:
+              </div>
+              <div class="quotes-list" id="stageQuotesList"></div>
+            </div>
+
+            <div>
+              <button type="button" class="btn-primary" id="btnRevealTrap">
+                Revelar: Por que isso é uma armadilha? (+25 XP)
+              </button>
+            </div>
+
+            <div class="trap-reveal-box hidden" id="trapRevealBox">
+              <div class="trap-reveal-title">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+                Por que isso é uma armadilha?
+              </div>
+              <p class="trap-reveal-text" id="trapExplainText"></p>
+              <p class="trap-defense-text" id="trapDefenseText"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Red Flag Scanner Mini-Desafio -->
+        <div class="scanner-section">
+          <div class="scanner-header">
+            <div>
+              <h3 class="scanner-title">Desafio Extra: Scanner de Red Flags</h3>
+              <p class="kicker-line">Leia cada mensagem suspeita e identifique qual tática de aliciamento está sendo usada (+20 XP por acerto).</p>
+            </div>
+            <div class="mission-progress-meta" id="scannerScoreMeta">0 / 4 identificadas</div>
+          </div>
+
+          <div class="scanner-grid" id="scannerGrid"></div>
+        </div>
+
+        <div class="mission-footer-nav">
+          <button type="button" class="btn-secondary" data-go-mission="1">Voltar à Missão 01</button>
+          <button type="button" class="btn-primary" data-go-mission="3">Avançar para Missão 03: Simulador de Chat</button>
+        </div>
+      </article>
+
+      <!-- MISSÃO 3 -->
+      <article class="mission-panel" id="mission-3">
+        <div class="mission-header">
+          <div>
+            <div class="mission-kicker">Missão 03 · Treinamento Prático</div>
+            <h2 class="mission-heading">Simulador de Chat: “O que você faria?”</h2>
+            <p class="mission-subtitle">
+              Teste seus reflexos em 3 situações reais de jogos e redes sociais. Escolha a resposta mais segura para proteger sua privacidade e ganhar XP (+35 XP por cenário seguro).
+            </p>
+          </div>
+          <div class="mission-progress-meta" id="m3Progress">0 / 3 cenários resolvidos</div>
+        </div>
+
+        <div class="chat-sim-layout">
+          <div class="scenario-list" id="scenarioList"></div>
+
+          <div class="chat-window">
+            <div class="chat-topbar">
+              <div class="chat-user">
+                <div class="chat-avatar" id="chatAvatar">P</div>
+                <div>
+                  <div class="chat-username" id="chatUsername">ProPlayer_BR99</div>
+                  <div class="chat-platform" id="chatPlatform">Chat do Jogo · Desconhecido</div>
+                </div>
+              </div>
+              <span class="kicker-line" id="chatScenarioTag">Cenário 1 de 3</span>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <div class="chat-choices" id="chatChoices"></div>
+          </div>
+        </div>
+
+        <div class="mission-footer-nav">
+          <button type="button" class="btn-secondary" data-go-mission="2">Voltar à Missão 02</button>
+          <button type="button" class="btn-primary" data-go-mission="4">Avançar para Missão 04: Nunca Esconda</button>
+        </div>
+      </article>
+
+      <!-- MISSÃO 4 -->
+      <article class="mission-panel" id="mission-4">
+        <div class="mission-header">
+          <div>
+            <div class="mission-kicker">Missão 04 · Rede de Apoio</div>
+            <h2 class="mission-heading">Por que NUNCA esconder isso dos seus pais ou responsáveis?</h2>
+            <p class="mission-subtitle">
+              O silêncio é a principal arma de quem comete crimes na internet. Clique nos 3 medos abaixo para desmontar as mentiras que impedem jovens de pedir ajuda (+15 XP cada).
+            </p>
+          </div>
+          <div class="mission-progress-meta" id="m4Progress">0 / 3 medos desmontados</div>
+        </div>
+
+        <div class="fears-grid" id="fearsGrid">
+          <button type="button" class="fear-card" data-fear="0" aria-expanded="false">
+            <div>
+              <span class="fear-tag">MEDO COMUM 1 · CLIQUE PARA DESMONTAR</span>
+              <div class="fear-myth">“Se eu contar, vou ficar de castigo ou vão tirar meu celular e videogame.”</div>
+            </div>
+            <p class="fear-truth">
+              <strong>A verdade:</strong> Pais e responsáveis podem ficar preocupados ou assustados na hora, mas o objetivo deles é proteger você de um crime grave. Conversar cedo resolve o problema antes que piore; esconder só dá mais tempo ao criminoso.
+            </p>
+          </button>
+
+          <button type="button" class="fear-card" data-fear="1" aria-expanded="false">
+            <div>
+              <span class="fear-tag">MEDO COMUM 2 · CLIQUE PARA DESMONTAR</span>
+              <div class="fear-myth">“Tenho vergonha porque respondi, aceitei um presente ou achei que era meu amigo.”</div>
+            </div>
+            <p class="fear-truth">
+              <strong>A verdade:</strong> Adultos mal-intencionados usam manipulação psicológica treinada para enganar jovens. Mesmo que você tenha respondido ou mandado algo, você foi enganado(a) — não é o culpado(a).
+            </p>
+          </button>
+
+          <button type="button" class="fear-card" data-fear="2" aria-expanded="false">
+            <div>
+              <span class="fear-tag">MEDO COMUM 3 · CLIQUE PARA DESMONTAR</span>
+              <div class="fear-myth">“Ele ameaçou contar tudo na minha escola ou mandar prints para minha família.”</div>
+            </div>
+            <p class="fear-truth">
+              <strong>A verdade:</strong> Chantagistas dependem do seu pânico para continuar mandando em você. No momento em que você conta para seus pais e salva as provas, o criminoso perde todo o poder e passa a ser investigado pela polícia.
+            </p>
+          </button>
+        </div>
+
+        <div class="core-truth-callout">
+          <h3>Regra de Ouro do Escudo Digital: A culpa NUNCA é da vítima.</h3>
+          <p>
+            Seus pais, responsáveis, professores de confiança ou tios são seus aliados de proteção — não juízes para punir quem pediu socorro. E se você sentir muito medo ou não tiver abertura em casa naquele momento, existem canais gratuitos, seguros e anônimos no Brasil prontos para ajudar você agora mesmo:
+          </p>
+        </div>
+
+        <div class="help-channels-grid">
+          <div class="channel-card">
+            <div class="channel-name">Disque 100</div>
+            <div class="channel-contact">Telefone: 100 (Gratuito · 24h)</div>
+            <p class="channel-desc">Canal oficial de Direitos Humanos no Brasil. Funciona todos os dias, é anônimo e acolhe denúncias de violência ou aliciamento contra crianças e adolescentes.</p>
+          </div>
+
+          <div class="channel-card">
+            <div class="channel-name">SaferNet Brasil (Helpline)</div>
+            <div class="channel-contact">canaldeajuda.org.br · denuncie.org.br</div>
+            <p class="channel-desc">Atendimento especializado, gratuito e sigiloso por chat com psicólogos para orientar jovens vítimas de chantagem, exposição íntima ou assédio online.</p>
+          </div>
+
+          <div class="channel-card">
+            <div class="channel-name">Polícia / Conselho Tutelar</div>
+            <div class="channel-contact">190 · Delegacia de Crimes Cibernéticos</div>
+            <p class="channel-desc">Em emergências ou ameaças diretas, procure a delegacia com um adulto levando prints da conversa, data, hora e o link (URL) do perfil suspeito.</p>
+          </div>
+        </div>
+
+        <div class="emergency-checklist">
+          <h4>Protocolo de Emergência em 3 Passos (Marque os passos para treinar · +30 XP ao completar):</h4>
+          <div class="check-items" id="emergencySteps">
+            <button type="button" class="check-step-btn" data-step="0" aria-pressed="false">
+              <span>1.</span>
+              <span><strong>Não apague as provas:</strong> Tire prints das mensagens, do nome de usuário e copie o link do perfil antes de bloquear.</span>
+            </button>
+            <button type="button" class="check-step-btn" data-step="1" aria-pressed="false">
+              <span>2.</span>
+              <span><strong>Corte o contato e bloqueie:</strong> Nunca ceda a chantagens nem responda provocações. Bloqueie e denuncie na plataforma.</span>
+            </button>
+            <button type="button" class="check-step-btn" data-step="2" aria-pressed="false">
+              <span>3.</span>
+              <span><strong>Avise um adulto de confiança:</strong> Mostre os prints aos seus pais, responsável ou ligue para o Disque 100 / SaferNet.</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mission-footer-nav">
+          <button type="button" class="btn-secondary" data-go-mission="3">Voltar à Missão 03</button>
+          <button type="button" class="btn-primary" data-go-mission="5">Avançar para Missão 05: Escudo da Lei</button>
+        </div>
+      </article>
+
+      <!-- MISSÃO 5 -->
+      <article class="mission-panel" id="mission-5">
+        <div class="mission-header">
+          <div>
+            <div class="mission-kicker">Missão 05 · Cidadania e Direitos no Brasil</div>
+            <h2 class="mission-heading">O Escudo da Lei e Seu Certificado de Guardião Digital</h2>
+            <p class="mission-subtitle">
+              A internet não é “terra sem lei”. No Brasil, crianças e adolescentes têm proteção reforçada pela legislação, e perfis falsos podem ser rastreados pela polícia.
+            </p>
+          </div>
+          <div class="mission-progress-meta" id="m5Progress">Gere seu certificado abaixo</div>
+        </div>
+
+        <div class="laws-grid">
+          <div class="law-card">
+            <span class="law-code">ECA · ART. 241-D (LEI 8.069/1990)</span>
+            <h3 class="law-title">Crime de Aliciamento Online</h3>
+            <p class="law-text">
+              Define como crime grave aliciar, assediar, instigar ou constranger criança, por qualquer meio de comunicação (incluindo jogos, WhatsApp, Discord e redes sociais), com o objetivo de praticar ato libidinoso. A pena inclui prisão (reclusão) e multa.
+            </p>
+          </div>
+
+          <div class="law-card">
+            <span class="law-code">CÓDIGO PENAL · ARTS. 218-B, 218-C E 158</span>
+            <h3 class="law-title">Proteção contra Exploração e Sextorsão</h3>
+            <p class="law-text">
+              Protege adolescentes contra exploração sexual, pune severamente quem compartilha fotos ou vídeos íntimos sem autorização (Art. 218-C) e tipifica a chantagem por dinheiro, favores ou novas imagens como crime de extorsão (Art. 158).
+            </p>
+          </div>
+
+          <div class="law-card">
+            <span class="law-code">MARCO CIVIL DA INTERNET E LGPD (ART. 14)</span>
+            <h3 class="law-title">Rastreamento de Perfis Falsos</h3>
+            <p class="law-text">
+              A LGPD exige proteção especial aos dados de crianças e adolescentes, e o Marco Civil obriga empresas e provedores a guardar registros de conexão (IPs e horários). Por ordem judicial, a polícia identifica quem está por trás de qualquer perfil “fake”.
+            </p>
+          </div>
+        </div>
+
+        <div class="certificate-builder">
+          <div class="cert-form-box">
+            <div>
+              <h3>Emitir Certificado de Guardião Digital</h3>
+              <p class="kicker-line" style="margin-top:4px;">Digite seu nome ou apelido de jogador para gerar sua credencial personalizada (+50 XP).</p>
+            </div>
+
+            <div>
+              <label for="agentNameInput" class="form-label">Seu nome ou nick de jogador:</label>
+              <input type="text" id="agentNameInput" class="text-input" maxlength="28" placeholder="Ex.: Agente_Bia ou Lucas_Cyber" />
+            </div>
+
+            <div>
+              <span class="form-label">Escolha seu emblema oficial:</span>
+              <div class="emblem-picker" id="emblemPicker">
+                <button type="button" class="emblem-btn active" data-emblem="shield">Escudo Cyber</button>
+                <button type="button" class="emblem-btn" data-emblem="owl">Coruja Radar</button>
+                <button type="button" class="emblem-btn" data-emblem="bolt">Raio Protetor</button>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:4px;">
+              <button type="button" class="btn-primary" id="btnGenerateCert">
+                Gerar Meu Certificado
+              </button>
+              <button type="button" class="btn-secondary" id="btnDownloadCert">
+                Baixar Imagem (PNG)
+              </button>
+              <button type="button" class="btn-secondary" id="btnPrintCert">
+                Imprimir
+              </button>
+            </div>
+          </div>
+
+          <div class="certificate-preview" id="certificateCard">
+            <div class="cert-top-row">
+              <span class="cert-org">ESCUDO DIGITAL · ACADEMIA ANTI-GROOMING</span>
+              <span class="cert-serial" id="certSerial">ID #ED-2026-001</span>
+            </div>
+
+            <div class="cert-body">
+              <div class="cert-badge-seal" id="certBadgeSeal" aria-hidden="true"></div>
+              <div>
+                <div class="cert-agent-label">Certificado concedido ao Agente Digital:</div>
+                <div class="cert-agent-name" id="certAgentName">Agente em Treinamento</div>
+                <div class="cert-rank-line" id="certRankLine">Patente: Recruta · 0 XP acumulados</div>
+              </div>
+            </div>
+
+            <div class="cert-footer-row">
+              <span id="certStatsLine">Missões concluídas: 0/5 · Medalhas: 0/6</span>
+              <span id="certDateLine">Emitido em Brasil</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mission-footer-nav">
+          <button type="button" class="btn-secondary" data-go-mission="4">Voltar à Missão 04</button>
+          <button type="button" class="btn-secondary" data-go-mission="1">Recomeçar Revisão na Missão 01</button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Escudo Digital · Educação preventiva contra grooming e aliciamento online (9 a 16 anos).</span>
+    <span>Em caso de risco imediato: Disque 100 · SaferNet (canaldeajuda.org.br) · Polícia 190.</span>
+  </footer>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* =========================================================
+         1. STATE & GAMIFICATION DATA
+         ========================================================= */
+      const MAX_XP = 550;
+      const STORAGE_KEY = 'escudo_digital_progress_v1';
+
+      const state = {
+        xp: 0,
+        soundEnabled: true,
+        activeMission: 1,
+        flippedCards: [false, false, false, false],
+        activeStageIndex: 0,
+        inspectedStages: [false, false, false, false, false],
+        scannerSolved: [false, false, false, false],
+        activeScenarioIndex: 0,
+        scenarioChoices: [null, null, null],
+        scenarioSolved: [false, false, false],
+        fearsRevealed: [false, false, false],
+        emergencySteps: [false, false, false],
+        certificateGenerated: false,
+        agentName: '',
+        emblem: 'shield',
+        unlockedMedals: {}
+      };
+
+      const RANKS = [
+        { minXp: 0, label: 'Nível 1 · Recruta' },
+        { minXp: 120, label: 'Nível 2 · Detetive Digital' },
+        { minXp: 280, label: 'Nível 3 · Agente Especial' },
+        { minXp: 430, label: 'Nível 4 · Guardião Cyber' }
+      ];
+
+      const MEDALS = [
+        { id: 'm1', name: 'Olhar Crítico', desc: 'Investigou todas as cartas da Missão 1' },
+        { id: 'm2', name: 'Caçador de Red Flags', desc: 'Inspecionou os 5 estágios do aliciamento' },
+        { id: 'm3', name: 'Scanner Afiado', desc: 'Acertou todas as mensagens do Scanner' },
+        { id: 'm4', name: 'Mestre do Chat', desc: 'Escolheu opções seguras nos 3 chats' },
+        { id: 'm5', name: 'Sem Medo de Falar', desc: 'Completou a Missão 4 e rede de apoio' },
+        { id: 'm6', name: 'Guardião Certificado', desc: 'Emitiu o Certificado de Guardião Digital' }
+      ];
+
+      const STAGES = [
+        {
+          code: 'Estágio 1 de 5',
+          name: 'Aproximação e Bajulação (“Love Bombing”)',
+          danger: 'ALERTA · FASE 1',
+          summary: 'O aliciador estuda seus gostos, jogos e rotina para criar uma conexão artificial muito rápida. Ele enche você de elogios exagerados e finge ter os mesmos problemas para parecer a única pessoa que realmente se importa.',
+          quotes: [
+            '“Ninguém te entende como eu, você é muito especial.”',
+            '“Você é muito maduro(a) para a sua idade, dá pra conversar sobre tudo.”',
+            '“Joguei com muita gente hoje, mas você foi a pessoa mais legal de longe.”'
+          ],
+          explain: 'Na psicologia, isso se chama “Love Bombing” (bombardeio de carinho). O adulto cria dependência emocional e faz você se sentir validado(a) para baixar suas defesas naturais contra desconhecidos.',
+          defense: 'Como se defender: Desconfie quando alguém que você mal conhece elogia demais, concorda com tudo ou tenta criar intimidade instantânea.'
+        },
+        {
+          code: 'Estágio 2 de 5',
+          name: 'Oferta de Presentes e Vantagens',
+          danger: 'ALERTA · FASE 2',
+          summary: 'Para consolidar a confiança e criar uma sensação de dívida, o adulto oferece itens desejados em jogos, dinheiro via PIX, recargas de celular ou presentes sem motivo aparente.',
+          quotes: [
+            '“Passa seu nick ou seu número que eu te mando 2.000 Robux / diamantes.”',
+            '“Se você conversar comigo por vídeo, compro a skin rara que você quer.”',
+            '“Não precisa falar nada pros seus pais, é só um presente de amigo.”'
+          ],
+          explain: 'Na internet, ninguém desconhecido distribui dinheiro ou itens pagos por pura bondade. A tática serve para fazer você sentir que “deve um favor” quando ele pedir algo pessoal em troca.',
+          defense: 'Como se defender: Nunca aceite presentes, moedas de jogos, recargas ou dinheiro de estranhos online.'
+        },
+        {
+          code: 'Estágio 3 de 5',
+          name: 'Isolamento',
+          danger: 'PERIGO ALTO · FASE 3',
+          summary: 'O aliciador começa a afastar você de pais, responsáveis e amigos reais. Ele pinta sua família como “chata” ou “careta” e transforma a conversa de vocês em um segredo proibido.',
+          quotes: [
+            '“Seus pais são muito rígidos, eles nunca entenderiam nossa amizade.”',
+            '“Isso aqui é um segredo só nosso, não conta pra ninguém da sua casa.”',
+            '“Apaga o histórico depois pra ninguém ficar controlando a sua vida.”'
+          ],
+          explain: 'Criminosos têm pavor de adultos atentos por perto. Se alguém pede para você esconder uma amizade dos seus pais ou apagar conversas, o objetivo é garantir que você fique sem proteção.',
+          defense: 'Como se defender: Regra absoluta — se alguém pedir segredo dos seus pais, conte imediatamente para eles.'
+        },
+        {
+          code: 'Estágio 4 de 5',
+          name: 'Dessensibilização e Quebra de Limites',
+          danger: 'PERIGO CRÍTICO · FASE 4',
+          summary: 'Depois de isolar a vítima, o agressor testa limites aos poucos: introduz assuntos íntimos, faz perguntas sobre o corpo, manda imagens impróprias fingindo ser “brincadeira” e tenta normalizar o desconforto.',
+          quotes: [
+            '“Todo mundo da sua idade já conversa sobre isso, deixa de timidez.”',
+            '“Liga a câmera só um minutinho pra eu ver como você tá hoje, confia em mim.”',
+            '“Relaxa, é só zoeira nossa, apaga na hora que eu olhar.”'
+          ],
+          explain: 'O objetivo é acostumar você a ultrapassar seus próprios limites (dessensibilização) até conseguir uma única foto, vídeo ou informação íntima para usar como arma.',
+          defense: 'Como se defender: Sentiu desconforto, vergonha ou estranheza? Não explique, não negocie: saia da conversa, salve prints e peça ajuda.'
+        },
+        {
+          code: 'Estágio 5 de 5',
+          name: 'Chantagem e Ameaça (Sextorsão)',
+          danger: 'CRIME EXPLÍCITO · FASE 5',
+          summary: 'Assim que obtém uma foto, áudio ou dado pessoal, o “amigo legal” desaparece. Começam as ameaças diretas para forçar você a enviar mais material ou obedecer às ordens dele.',
+          quotes: [
+            '“Se você me bloquear, eu mando esses prints pra sua mãe e pro grupo da escola.”',
+            '“Já salvei tudo aqui. Agora você vai fazer exatamente o que eu mandar.”',
+            '“Se você contar pra alguém, vão achar que a culpa foi sua.”'
+          ],
+          explain: 'É a armadilha final da sextorsão. O criminoso aposta no seu medo e na sua vergonha para manter você preso(a). Mas ceder à chantagem NUNCA faz ele parar — só aumenta o controle.',
+          defense: 'Como se defender: NUNCA ceda! Tire prints como prova, bloqueie imediatamente e conte aos seus pais ou ligue Disque 100.'
+        }
+      ];
+
+      const SCANNER_CASES = [
+        {
+          id: 0,
+          message: '“Nossa, você joga melhor que muita gente adulta! Seus pais devem ser chatos pra caramba, né? Não conta pra eles que a gente conversa por aqui.”',
+          correct: 'Isolamento',
+          options: ['Love Bombing', 'Presente/Suborno', 'Isolamento', 'Chantagem'],
+          explanation: 'Correto! Ele tenta jogar você contra seus pais e criar um segredo.'
+        },
+        {
+          id: 1,
+          message: '“Eu trabalho com criação de jogos e posso colocar 5.000 moedas na sua conta agora. Só me passa seu WhatsApp pra eu mandar o código.”',
+          correct: 'Presente/Suborno',
+          options: ['Presente/Suborno', 'Quebra de Limites', 'Chantagem', 'Isolamento'],
+          explanation: 'Isso mesmo! Oferta de vantagem fácil para conseguir seu contato pessoal.'
+        },
+        {
+          id: 2,
+          message: '“Todo mundo da sua sala já manda foto assim, é super normal! Liga a webcam rapidinho, se você confia em mim mesmo.”',
+          correct: 'Quebra de Limites',
+          options: ['Love Bombing', 'Isolamento', 'Quebra de Limites', 'Presente/Suborno'],
+          explanation: 'Exato! Pressão emocional para normalizar algo íntimo e quebrar seus limites.'
+        },
+        {
+          id: 3,
+          message: '“Você é diferente de todo mundo que eu conheço. Nunca encontrei alguém tão inteligente e especial na internet.”',
+          correct: 'Love Bombing',
+          options: ['Chantagem', 'Love Bombing', 'Quebra de Limites', 'Presente/Suborno'],
+          explanation: 'Acertou! Elogios exagerados vindos de um desconhecido são um sinal clássico de Love Bombing.'
+        }
+      ];
+
+      const CHAT_SCENARIOS = [
+        {
+          title: 'O Doador de Skins',
+          sender: 'ProPlayer_BR99',
+          avatar: 'PP',
+          platform: 'Chat de Jogo Online · Desconhecido',
+          messages: [
+            { from: 'stranger', text: 'E aí! Você carregou o time todo na partida, joga muito bem!', time: '16:12' },
+            { from: 'stranger', text: 'Quero te dar o passe premium e 2.000 moedas de presente. Me passa seu WhatsApp e manda uma selfie sua só pra eu confirmar que não é conta robô?', time: '16:13' }
+          ],
+          options: [
+            {
+              text: 'Passar o WhatsApp, mas dizer que não quer mandar foto agora.',
+              safe: false,
+              feedback: 'Risco Alto! Mesmo sem mandar foto, passar seu WhatsApp entrega seu número de telefone, foto de perfil e dados reais para um desconhecido te pressionar fora da moderação do jogo.'
+            },
+            {
+              text: 'Recusar a oferta, não enviar dados nem foto, e bloquear/denunciar o pedido suspeito.',
+              safe: true,
+              feedback: 'Escolha Segura (+35 XP)! Nenhum jogador precisa do seu WhatsApp ou selfie para nada. Manter conversas apenas dentro do chat público do jogo e bloquear pedidos suspeitos protege você.'
+            },
+            {
+              text: 'Mandar uma foto rápida do rosto e apagar depois para ganhar o passe.',
+              safe: false,
+              feedback: 'Armadilha! Assim que a foto é enviada, a pessoa pode salvar na hora (print) e usar para pedir favores ou ameaçar você depois.'
+            }
+          ]
+        },
+        {
+          title: 'O Segredo Proibido',
+          sender: 'Lari_Gamer14',
+          avatar: 'LG',
+          avatarBg: 'rgba(34, 211, 238, 0.14)',
+          platform: 'Rede Social · Mensagem Direta',
+          messages: [
+            { from: 'stranger', text: 'Sinto que a gente tem uma conexão muito forte. Ninguém na sua escola te entende como eu.', time: '19:40' },
+            { from: 'stranger', text: 'Só me promete uma coisa: nunca mostra nossas conversas pros seus pais. Eles são muito rígidos e iam proibir nossa amizade.', time: '19:41' }
+          ],
+          options: [
+            {
+              text: 'Prometer guardar segredo para não perder a amizade.',
+              safe: false,
+              feedback: 'Perigo! Pedir segredo dos seus pais e tentar afastá-los é o sinal número 1 de aliciamento (Isolamento). Amizades saudáveis nunca precisam ser escondidas.'
+            },
+            {
+              text: 'Ignorar a mensagem e continuar conversando normalmente amanhã.',
+              safe: false,
+              feedback: 'Atenção! Ignorar o pedido de segredo sem cortar o contato deixa o aliciador continuar tentando manipular você nos dias seguintes.'
+            },
+            {
+              text: 'Encerrar a conversa, tirar print e mostrar para seus pais ou responsável.',
+              safe: true,
+              feedback: 'Escolha Segura (+35 XP)! Quebrar o segredo imediatamente desmonta a tática de isolamento. Contar para um adulto de confiança garante proteção total.'
+            }
+          ]
+        },
+        {
+          title: 'Pressão e Ameaça',
+          sender: 'Gui_Oficial',
+          avatar: 'GO',
+          platform: 'App de Mensagens · Perfil Recente',
+          messages: [
+            { from: 'stranger', text: 'Como assim você não vai ligar a câmera? Achei que a gente confiava um no outro.', time: '21:05' },
+            { from: 'stranger', text: 'Se você me bloquear ou não mandar uma foto agora, vou mandar print da nossa conversa pros seus colegas e dizer coisas feias sobre você.', time: '21:06' }
+          ],
+          options: [
+            {
+              text: 'Mandar só uma foto simples rápido para ele parar de ameaçar.',
+              safe: false,
+              feedback: 'Nunca ceda! Entregar uma foto por medo só dá mais munição para o chantagista exigir coisas piores logo depois.'
+            },
+            {
+              text: 'Xingar o perfil, apagar toda a conversa no seu celular e bloquear correndo.',
+              safe: false,
+              feedback: 'Cuidado! Bloquear é ótimo, mas apagar a conversa destrói as provas. Primeiro salve prints e mostre a um adulto!'
+            },
+            {
+              text: 'Não ceder, tirar print das ameaças e do perfil, bloquear e mostrar imediatamente a um adulto.',
+              safe: true,
+              feedback: 'Escolha Segura (+35 XP)! Esse é o protocolo perfeito: não ceder à chantagem, preservar as provas (prints), bloquear e buscar apoio de pais/responsáveis ou Disque 100.'
+            }
+          ]
+        }
+      ];
+
+      const EMBLEM_SVGS = {
+        shield: '<svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
+        owl: '<svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="10" r="3"/><circle cx="15" cy="10" r="3"/><path d="M5 10c0-4 3-7 7-7s7 3 7 7v6a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5v-6z"/><path d="m10 14 2 2 2-2"/></svg>',
+        bolt: '<svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
+      };
+
+      /* =========================================================
+         2. WEB AUDIO API (OPTIONAL SYNTHESIZED SFX)
+         ========================================================= */
+      let audioCtx = null;
+
+      function getAudioCtx() {
+        if (!state.soundEnabled) return null;
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+        return audioCtx;
+      }
+
+      function playTone(freq, duration, type, gainVal, delay) {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const start = ctx.currentTime + (delay || 0);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.setValueAtTime(freq, start);
+        gain.gain.setValueAtTime(gainVal || 0.06, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + duration);
+      }
+
+      function playSfx(kind) {
+        if (!state.soundEnabled) return;
+        if (kind === 'flip') {
+          playTone(520, 0.09, 'triangle', 0.05, 0);
+        } else if (kind === 'xp') {
+          playTone(587.33, 0.1, 'sine', 0.06, 0);
+          playTone(880, 0.16, 'sine', 0.06, 0.08);
+        } else if (kind === 'medal') {
+          playTone(523.25, 0.12, 'triangle', 0.07, 0);
+          playTone(659.25, 0.12, 'triangle', 0.07, 0.09);
+          playTone(783.99, 0.14, 'triangle', 0.07, 0.18);
+          playTone(1046.5, 0.25, 'triangle', 0.08, 0.27);
+        } else if (kind === 'warn') {
+          playTone(240, 0.14, 'sawtooth', 0.04, 0);
+          playTone(190, 0.18, 'sawtooth', 0.04, 0.11);
+        } else if (kind === 'click') {
+          playTone(420, 0.05, 'sine', 0.03, 0);
+        }
+      }
+
+      /* =========================================================
+         3. TOASTS, XP, RANKS & PERSISTENCE
+         ========================================================= */
+      function showToast(text, isMedal) {
+        const stack = document.getElementById('toastStack');
+        const el = document.createElement('div');
+        el.className = 'toast-item' + (isMedal ? ' medal' : '');
+        el.innerHTML = isMedal
+          ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span></span>'
+          : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span></span>';
+        el.querySelector('span').textContent = text;
+        stack.appendChild(el);
+        setTimeout(() => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(6px)';
+          el.style.transition = 'opacity 180ms ease, transform 180ms ease';
+          setTimeout(() => el.remove(), 200);
+        }, 2800);
+      }
+
+      function getCurrentRank(xp) {
+        let current = RANKS[0].label;
+        for (const r of RANKS) {
+          if (xp >= r.minXp) current = r.label;
+        }
+        return current;
+      }
+
+      function addXp(amount, reason) {
+        state.xp = Math.min(MAX_XP, state.xp + amount);
+        playSfx('xp');
+        showToast('+' + amount + ' XP · ' + reason, false);
+        checkMedals();
+        updateHud();
+        saveState();
+      }
+
+      function unlockMedal(id) {
+        if (state.unlockedMedals[id]) return;
+        state.unlockedMedals[id] = true;
+        const m = MEDALS.find((x) => x.id === id);
+        if (m) {
+          playSfx('medal');
+          showToast('Medalha desbloqueada: ' + m.name, true);
+        }
+      }
+
+      function checkMedals() {
+        if (state.flippedCards.every(Boolean)) unlockMedal('m1');
+        if (state.inspectedStages.every(Boolean)) unlockMedal('m2');
+        if (state.scannerSolved.every(Boolean)) unlockMedal('m3');
+        if (state.scenarioSolved.every(Boolean)) unlockMedal('m4');
+        if (state.fearsRevealed.every(Boolean) && state.emergencySteps.every(Boolean)) unlockMedal('m5');
+        if (state.certificateGenerated) unlockMedal('m6');
+      }
+
+      function isMissionDone(num) {
+        if (num === 1) return state.flippedCards.every(Boolean);
+        if (num === 2) return state.inspectedStages.every(Boolean) && state.scannerSolved.every(Boolean);
+        if (num === 3) return state.scenarioSolved.every(Boolean);
+        if (num === 4) return state.fearsRevealed.every(Boolean) && state.emergencySteps.every(Boolean);
+        if (num === 5) return state.certificateGenerated;
+        return false;
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+          // Ignore storage quota errors in private browsing
+        }
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (typeof parsed.xp === 'number') state.xp = Math.min(MAX_XP, parsed.xp);
+          if (typeof parsed.soundEnabled === 'boolean') state.soundEnabled = parsed.soundEnabled;
+          if (Array.isArray(parsed.flippedCards) && parsed.flippedCards.length === 4) state.flippedCards = parsed.flippedCards;
+          if (Array.isArray(parsed.inspectedStages) && parsed.inspectedStages.length === 5) state.inspectedStages = parsed.inspectedStages;
+          if (Array.isArray(parsed.scannerSolved) && parsed.scannerSolved.length === 4) state.scannerSolved = parsed.scannerSolved;
+          if (Array.isArray(parsed.scenarioChoices) && parsed.scenarioChoices.length === 3) state.scenarioChoices = parsed.scenarioChoices;
+          if (Array.isArray(parsed.scenarioSolved) && parsed.scenarioSolved.length === 3) state.scenarioSolved = parsed.scenarioSolved;
+          if (Array.isArray(parsed.fearsRevealed) && parsed.fearsRevealed.length === 3) state.fearsRevealed = parsed.fearsRevealed;
+          if (Array.isArray(parsed.emergencySteps) && parsed.emergencySteps.length === 3) state.emergencySteps = parsed.emergencySteps;
+          if (typeof parsed.certificateGenerated === 'boolean') state.certificateGenerated = parsed.certificateGenerated;
+          if (typeof parsed.agentName === 'string') state.agentName = parsed.agentName;
+          if (typeof parsed.emblem === 'string' && EMBLEM_SVGS[parsed.emblem]) state.emblem = parsed.emblem;
+          if (parsed.unlockedMedals && typeof parsed.unlockedMedals === 'object') state.unlockedMedals = parsed.unlockedMedals;
+        } catch (e) {
+          // Fallback to clean state
+        }
+      }
+
+      /* =========================================================
+         4. UI UPDATES & NAVIGATION
+         ========================================================= */
+      function updateHud() {
+        const rank = getCurrentRank(state.xp);
+        const pct = Math.min(100, Math.round((state.xp / MAX_XP) * 100));
+        const medalCount = Object.keys(state.unlockedMedals).filter((k) => state.unlockedMedals[k]).length;
+        let completedMissions = 0;
+        for (let i = 1; i <= 5; i++) {
+          if (isMissionDone(i)) completedMissions++;
+        }
+
+        document.getElementById('hudRank').textContent = rank;
+        document.getElementById('hudXpText').textContent = state.xp + ' / ' + MAX_XP + ' XP';
+        document.getElementById('xpFill').style.width = pct + '%';
+        document.getElementById('xpProgressBar').setAttribute('aria-valuenow', String(state.xp));
+        document.getElementById('hudMedalCount').textContent = medalCount + '/' + MEDALS.length;
+
+        document.getElementById('briefingMissions').textContent = completedMissions + ' / 5';
+        document.getElementById('briefingXp').textContent = state.xp + ' XP';
+
+        // Update mission tab completion statuses
+        for (let i = 1; i <= 5; i++) {
+          const tab = document.querySelector('.mission-tab[data-mission="' + i + '"]');
+          const statusEl = document.getElementById('tabStatus' + i);
+          const done = isMissionDone(i);
+          tab.classList.toggle('completed', done);
+          statusEl.textContent = done ? 'Concluída' : 'Aberta';
+          statusEl.style.color = done ? 'var(--accent-safe)' : 'var(--text-muted)';
+        }
+
+        renderMedals();
+        updateCertificatePreview();
+      }
+
+      function renderMedals() {
+        const container = document.getElementById('medalsStrip');
+        const medalColors = ['#22d3ee', '#fb7185', '#fbbf24', '#a855f7', '#4ade80', '#f472b6'];
+        container.innerHTML = '';
+        MEDALS.forEach((m, idx) => {
+          const isUnlocked = Boolean(state.unlockedMedals[m.id]);
+          const tint = medalColors[idx % medalColors.length];
+          const tile = document.createElement('div');
+          tile.className = 'medal-tile' + (isUnlocked ? ' unlocked' : '');
+          tile.title = m.desc;
+          if (isUnlocked) {
+            tile.style.borderColor = tint;
+            tile.style.background = 'linear-gradient(135deg, rgba(17, 25, 46, 0.9), rgba(30, 41, 74, 0.95))';
+          }
+          tile.innerHTML =
+            '<svg viewBox="0 0 24 24" fill="none" stroke="' + (isUnlocked ? tint : 'currentColor') + '" stroke-width="2" aria-hidden="true">' +
+            '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>' +
+            '</svg>' +
+            '<span>' + m.name + '</span>';
+          container.appendChild(tile);
+        });
+      }
+
+      function switchMission(missionNum) {
+        state.activeMission = Number(missionNum);
+        document.querySelectorAll('.mission-tab').forEach((btn) => {
+          btn.classList.toggle('active', Number(btn.dataset.mission) === state.activeMission);
+        });
+        document.querySelectorAll('.mission-panel').forEach((panel) => {
+          panel.classList.toggle('active', panel.id === 'mission-' + state.activeMission);
+        });
+        const stage = document.querySelector('.mission-stage');
+        const y = stage.getBoundingClientRect().top + window.scrollY - 78;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      }
+
+      /* =========================================================
+         5. MISSION 1: FLIP CARDS
+         ========================================================= */
+      function initMission1() {
+        const cards = document.querySelectorAll('.flip-card');
+        cards.forEach((card) => {
+          const idx = Number(card.dataset.card);
+          if (state.flippedCards[idx]) {
+            card.classList.add('flipped');
+            card.setAttribute('aria-pressed', 'true');
+          }
+          card.addEventListener('click', () => {
+            const willFlip = !card.classList.contains('flipped');
+            card.classList.toggle('flipped', willFlip);
+            card.setAttribute('aria-pressed', String(willFlip));
+            playSfx('flip');
+            if (!state.flippedCards[idx]) {
+              state.flippedCards[idx] = true;
+              addXp(15, 'Disfarce revelado');
+            }
+            updateMission1Progress();
+          });
+        });
+        updateMission1Progress();
+      }
+
+      function updateMission1Progress() {
+        const count = state.flippedCards.filter(Boolean).length;
+        document.getElementById('m1Progress').textContent = count + ' / 4 cartas investigadas';
+        document.getElementById('m1StatusNote').textContent = count === 4
+          ? 'Missão 01 concluída! Você desvendou todos os disfarces.'
+          : 'Investigue as 4 cartas para concluir a Missão 01.';
+      }
+
+      /* =========================================================
+         6. MISSION 2: RADAR DE RED FLAGS & SCANNER
+         ========================================================= */
+      function initMission2() {
+        renderStageButtons();
+        renderActiveStage();
+        renderScanner();
+
+        document.getElementById('btnRevealTrap').addEventListener('click', () => {
+          const idx = state.activeStageIndex;
+          const wasInspected = state.inspectedStages[idx];
+          state.inspectedStages[idx] = true;
+          document.getElementById('trapRevealBox').classList.remove('hidden');
+          document.getElementById('btnRevealTrap').textContent = 'Armadilha Inspecionada';
+
+          if (!wasInspected) {
+            addXp(25, 'Estágio ' + (idx + 1) + ' inspecionado');
+          } else {
+            playSfx('click');
+          }
+          renderStageButtons();
+          updateMission2Progress();
+        });
+
+        updateMission2Progress();
+      }
+
+      function renderStageButtons() {
+        const list = document.getElementById('stageSelectorList');
+        list.innerHTML = '';
+        STAGES.forEach((st, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'stage-btn' + (idx === state.activeStageIndex ? ' active' : '');
+          btn.dataset.stage = String(idx);
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-selected', String(idx === state.activeStageIndex));
+
+          const inspected = state.inspectedStages[idx];
+          btn.innerHTML =
+            '<div>' +
+              '<div class="stage-btn-num">' + st.code + '</div>' +
+              '<div class="stage-btn-name">' + st.name + '</div>' +
+            '</div>' +
+            '<span class="' + (inspected ? 'stage-inspected-mark' : 'stage-uninspected-mark') + '">' +
+              (inspected ? 'Inspecionado' : 'Analisar') +
+            '</span>';
+
+          btn.addEventListener('click', () => {
+            state.activeStageIndex = idx;
+            playSfx('click');
+            renderStageButtons();
+            renderActiveStage();
+          });
+          list.appendChild(btn);
+        });
+      }
+
+      function renderActiveStage() {
+        const idx = state.activeStageIndex;
+        const st = STAGES[idx];
+        const inspected = state.inspectedStages[idx];
+
+        document.getElementById('stageDetailCode').textContent = st.code;
+        document.getElementById('stageDetailTitle').textContent = st.name;
+        document.getElementById('stageDangerBadge').textContent = st.danger;
+        document.getElementById('stageTacticSummary').textContent = st.summary;
+
+        const qList = document.getElementById('stageQuotesList');
+        qList.innerHTML = '';
+        st.quotes.forEach((q) => {
+          const div = document.createElement('div');
+          div.className = 'quote-item';
+          div.textContent = q;
+          qList.appendChild(div);
+        });
+
+        document.getElementById('trapExplainText').textContent = st.explain;
+        document.getElementById('trapDefenseText').textContent = st.defense;
+
+        const box = document.getElementById('trapRevealBox');
+        const btn = document.getElementById('btnRevealTrap');
+        if (inspected) {
+          box.classList.remove('hidden');
+          btn.textContent = 'Armadilha Inspecionada';
+        } else {
+          box.classList.add('hidden');
+          btn.textContent = 'Revelar: Por que isso é uma armadilha? (+25 XP)';
+        }
+      }
+
+      function renderScanner() {
+        const grid = document.getElementById('scannerGrid');
+        grid.innerHTML = '';
+        SCANNER_CASES.forEach((sc, idx) => {
+          const card = document.createElement('div');
+          card.className = 'scanner-card';
+
+          const msg = document.createElement('div');
+          msg.className = 'scanner-msg';
+          msg.textContent = sc.message;
+
+          const optsWrap = document.createElement('div');
+          optsWrap.className = 'scanner-options';
+
+          const fb = document.createElement('div');
+          fb.className = 'scanner-feedback';
+          if (state.scannerSolved[idx]) {
+            fb.textContent = sc.explanation;
+            fb.style.color = 'var(--accent-safe)';
+          } else {
+            fb.textContent = 'Selecione a tática correspondente:';
+            fb.style.color = 'var(--text-muted)';
+          }
+
+          sc.options.forEach((opt) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'scanner-opt-btn';
+            btn.textContent = opt;
+            if (state.scannerSolved[idx] && opt === sc.correct) {
+              btn.classList.add('correct');
+            }
+            if (state.scannerSolved[idx]) {
+              btn.disabled = true;
+            }
+            btn.addEventListener('click', () => {
+              if (state.scannerSolved[idx]) return;
+              if (opt === sc.correct) {
+                state.scannerSolved[idx] = true;
+                btn.classList.add('correct');
+                fb.textContent = sc.explanation;
+                fb.style.color = 'var(--accent-safe)';
+                optsWrap.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+                addXp(20, 'Red Flag identificada');
+                updateMission2Progress();
+              } else {
+                btn.classList.add('wrong');
+                playSfx('warn');
+                fb.textContent = 'Ainda não é essa tática. Releia a frase e tente outro sinal!';
+                fb.style.color = 'var(--accent-danger)';
+              }
+            });
+            optsWrap.appendChild(btn);
+          });
+
+          card.appendChild(msg);
+          card.appendChild(optsWrap);
+          card.appendChild(fb);
+          grid.appendChild(card);
+        });
+      }
+
+      function updateMission2Progress() {
+        const stagesCount = state.inspectedStages.filter(Boolean).length;
+        const scanCount = state.scannerSolved.filter(Boolean).length;
+        document.getElementById('m2Progress').textContent = stagesCount + ' / 5 armadilhas inspecionadas';
+        document.getElementById('scannerScoreMeta').textContent = scanCount + ' / 4 identificadas';
+      }
+
+      /* =========================================================
+         7. MISSION 3: INTERACTIVE CHAT SIMULATOR
+         ========================================================= */
+      function initMission3() {
+        renderScenarioTabs();
+        renderActiveScenario();
+        updateMission3Progress();
+      }
+
+      function renderScenarioTabs() {
+        const list = document.getElementById('scenarioList');
+        list.innerHTML = '';
+        CHAT_SCENARIOS.forEach((sc, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'scenario-tab' + (idx === state.activeScenarioIndex ? ' active' : '');
+          const solved = state.scenarioSolved[idx];
+          btn.innerHTML =
+            '<div class="scenario-tab-meta">' +
+              '<span>Cenário ' + (idx + 1) + '</span>' +
+              '<span style="color:' + (solved ? 'var(--accent-safe)' : 'var(--text-muted)') + ';font-weight:700;">' +
+                (solved ? 'Resolvido' : 'Pendente') +
+              '</span>' +
+            '</div>' +
+            '<div class="scenario-tab-name">' + sc.title + '</div>';
+          btn.addEventListener('click', () => {
+            state.activeScenarioIndex = idx;
+            playSfx('click');
+            renderScenarioTabs();
+            renderActiveScenario();
+          });
+          list.appendChild(btn);
+        });
+      }
+
+      function renderActiveScenario() {
+        const idx = state.activeScenarioIndex;
+        const sc = CHAT_SCENARIOS[idx];
+
+        document.getElementById('chatAvatar').textContent = sc.avatar;
+        document.getElementById('chatUsername').textContent = sc.sender;
+        document.getElementById('chatPlatform').textContent = sc.platform;
+        document.getElementById('chatScenarioTag').textContent = 'Cenário ' + (idx + 1) + ' de ' + CHAT_SCENARIOS.length;
+
+        const msgArea = document.getElementById('chatMessages');
+        msgArea.innerHTML = '';
+        sc.messages.forEach((m) => {
+          const b = document.createElement('div');
+          b.className = 'bubble bubble-stranger';
+          b.innerHTML = '<span></span><span class="bubble-time">' + m.time + '</span>';
+          b.querySelector('span').textContent = m.text;
+          msgArea.appendChild(b);
+        });
+
+        const chosenIdx = state.scenarioChoices[idx];
+        if (chosenIdx !== null && sc.options[chosenIdx]) {
+          const reply = document.createElement('div');
+          reply.className = 'bubble bubble-player';
+          reply.innerHTML = '<span></span><span class="bubble-time">Sua ação</span>';
+          reply.querySelector('span').textContent = sc.options[chosenIdx].text;
+          msgArea.appendChild(reply);
+        }
+
+        const choicesArea = document.getElementById('chatChoices');
+        choicesArea.innerHTML = '<div class="choices-prompt">Escolha como reagir:</div>';
+
+        sc.options.forEach((opt, optIdx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'choice-btn';
+          btn.textContent = opt.text;
+
+          if (chosenIdx === optIdx) {
+            btn.classList.add(opt.safe ? 'selected-safe' : 'selected-risk');
+          }
+
+          btn.addEventListener('click', () => {
+            state.scenarioChoices[idx] = optIdx;
+            if (opt.safe) {
+              const firstSolve = !state.scenarioSolved[idx];
+              state.scenarioSolved[idx] = true;
+              if (firstSolve) {
+                addXp(35, 'Decisão segura no chat');
+              } else {
+                playSfx('xp');
+              }
+            } else {
+              playSfx('warn');
+            }
+            saveState();
+            renderScenarioTabs();
+            renderActiveScenario();
+            updateMission3Progress();
+          });
+          choicesArea.appendChild(btn);
+        });
+
+        if (chosenIdx !== null && sc.options[chosenIdx]) {
+          const chosen = sc.options[chosenIdx];
+          const fb = document.createElement('div');
+          fb.className = 'chat-feedback visible ' + (chosen.safe ? 'safe' : 'risk');
+          fb.innerHTML =
+            '<span class="chat-feedback-label" style="color:' + (chosen.safe ? 'var(--accent-safe)' : 'var(--accent-danger)') + '">' +
+              (chosen.safe ? 'ESCOLHA SEGURA' : 'SINAL DE RISCO — TENTE OUTRA AÇÃO') +
+            '</span>' +
+            '<span></span>';
+          fb.querySelectorAll('span')[1].textContent = chosen.feedback;
+          choicesArea.appendChild(fb);
+        }
+      }
+
+      function updateMission3Progress() {
+        const count = state.scenarioSolved.filter(Boolean).length;
+        document.getElementById('m3Progress').textContent = count + ' / 3 cenários resolvidos';
+      }
+
+      /* =========================================================
+         8. MISSION 4: FEARS & HELP CHANNELS
+         ========================================================= */
+      function initMission4() {
+        const fearCards = document.querySelectorAll('.fear-card');
+        fearCards.forEach((card) => {
+          const idx = Number(card.dataset.fear);
+          if (state.fearsRevealed[idx]) {
+            card.classList.add('revealed');
+            card.setAttribute('aria-expanded', 'true');
+            card.querySelector('.fear-tag').textContent = 'MITO DESMONTADO · REALIDADE REVELADA';
+          }
+          card.addEventListener('click', () => {
+            if (!state.fearsRevealed[idx]) {
+              state.fearsRevealed[idx] = true;
+              card.classList.add('revealed');
+              card.setAttribute('aria-expanded', 'true');
+              card.querySelector('.fear-tag').textContent = 'MITO DESMONTADO · REALIDADE REVELADA';
+              addXp(15, 'Medo superado');
+            } else {
+              playSfx('click');
+            }
+            updateMission4Progress();
+          });
+        });
+
+        const stepBtns = document.querySelectorAll('.check-step-btn');
+        stepBtns.forEach((btn) => {
+          const idx = Number(btn.dataset.step);
+          if (state.emergencySteps[idx]) {
+            btn.classList.add('checked');
+            btn.setAttribute('aria-pressed', 'true');
+          }
+          btn.addEventListener('click', () => {
+            const wasAll = state.emergencySteps.every(Boolean);
+            state.emergencySteps[idx] = !state.emergencySteps[idx];
+            btn.classList.toggle('checked', state.emergencySteps[idx]);
+            btn.setAttribute('aria-pressed', String(state.emergencySteps[idx]));
+            playSfx('click');
+            if (!wasAll && state.emergencySteps.every(Boolean)) {
+              addXp(30, 'Protocolo de emergência treinado');
+            } else {
+              checkMedals();
+              updateHud();
+              saveState();
+            }
+          });
+        });
+
+        updateMission4Progress();
+      }
+
+      function updateMission4Progress() {
+        const count = state.fearsRevealed.filter(Boolean).length;
+        document.getElementById('m4Progress').textContent = count + ' / 3 medos desmontados';
+      }
+
+      /* =========================================================
+         9. MISSION 5: CERTIFICATE GENERATOR & PNG EXPORT
+         ========================================================= */
+      function initMission5() {
+        const input = document.getElementById('agentNameInput');
+        input.value = state.agentName;
+
+        document.querySelectorAll('.emblem-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.emblem === state.emblem);
+          btn.addEventListener('click', () => {
+            state.emblem = btn.dataset.emblem;
+            document.querySelectorAll('.emblem-btn').forEach((b) => {
+              b.classList.toggle('active', b.dataset.emblem === state.emblem);
+            });
+            playSfx('click');
+            updateCertificatePreview();
+            saveState();
+          });
+        });
+
+        input.addEventListener('input', () => {
+          state.agentName = input.value.trim();
+          updateCertificatePreview();
+        });
+
+        document.getElementById('btnGenerateCert').addEventListener('click', () => {
+          const val = input.value.trim();
+          state.agentName = val || 'Agente Guardião';
+          input.value = state.agentName;
+          const firstTime = !state.certificateGenerated;
+          state.certificateGenerated = true;
+          if (firstTime) {
+            addXp(50, 'Certificado emitido');
+          } else {
+            playSfx('medal');
+            showToast('Certificado atualizado para ' + state.agentName, true);
+          }
+          updateCertificatePreview();
+          updateHud();
+          saveState();
+        });
+
+        document.getElementById('btnPrintCert').addEventListener('click', () => {
+          window.print();
+        });
+
+        document.getElementById('btnDownloadCert').addEventListener('click', downloadCertificatePng);
+
+        updateCertificatePreview();
+      }
+
+      function updateCertificatePreview() {
+        const name = state.agentName || 'Agente em Treinamento';
+        const rank = getCurrentRank(state.xp);
+        const medalCount = Object.keys(state.unlockedMedals).filter((k) => state.unlockedMedals[k]).length;
+        let completed = 0;
+        for (let i = 1; i <= 5; i++) {
+          if (isMissionDone(i)) completed++;
+        }
+
+        document.getElementById('certAgentName').textContent = name;
+        document.getElementById('certRankLine').textContent = 'Patente: ' + rank + ' · ' + state.xp + ' XP acumulados';
+        document.getElementById('certStatsLine').textContent = 'Missões concluídas: ' + completed + '/5 · Medalhas: ' + medalCount + '/6';
+        document.getElementById('certBadgeSeal').innerHTML = EMBLEM_SVGS[state.emblem] || EMBLEM_SVGS.shield;
+
+        const today = new Date().toLocaleDateString('pt-BR');
+        document.getElementById('certDateLine').textContent = 'Emitido em ' + today + ' · Brasil';
+        document.getElementById('m5Progress').textContent = state.certificateGenerated
+          ? 'Certificado emitido com sucesso'
+          : 'Gere seu certificado abaixo';
+      }
+
+      function downloadCertificatePng() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1000;
+        canvas.height = 560;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Background
+        const grad = ctx.createLinearGradient(0, 0, 1000, 560);
+        grad.addColorStop(0, '#0b1836');
+        grad.addColorStop(0.5, '#27144b');
+        grad.addColorStop(1, '#0f2b42');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1000, 560);
+
+        // Colorful Border
+        const borderGrad = ctx.createLinearGradient(0, 0, 1000, 560);
+        borderGrad.addColorStop(0, '#22d3ee');
+        borderGrad.addColorStop(0.5, '#a855f7');
+        borderGrad.addColorStop(1, '#f472b6');
+        ctx.strokeStyle = borderGrad;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(24, 24, 952, 512);
+
+        // Header
+        ctx.fillStyle = '#22d3ee';
+        ctx.font = 'bold 22px sans-serif';
+        ctx.fillText('ESCUDO DIGITAL · ACADEMIA ANTI-GROOMING', 64, 86);
+
+        ctx.fillStyle = '#f472b6';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('PROTEÇÃO INFANTOJUVENIL · ECA ART. 241-D', 64, 118);
+
+        // Shield emblem graphic
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(120, 190);
+        ctx.lineTo(175, 212);
+        ctx.lineTo(175, 272);
+        ctx.quadraticCurveTo(175, 326, 120, 355);
+        ctx.quadraticCurveTo(65, 326, 65, 272);
+        ctx.lineTo(65, 212);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(34, 211, 238, 0.14)';
+        ctx.fill();
+        ctx.stroke();
+
+        // Check inside shield
+        ctx.strokeStyle = '#4ade80';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(96, 274);
+        ctx.lineTo(114, 294);
+        ctx.lineTo(148, 252);
+        ctx.stroke();
+
+        // Main Text
+        const name = state.agentName || 'Agente Guardião';
+        const rank = getCurrentRank(state.xp);
+        const medalCount = Object.keys(state.unlockedMedals).filter((k) => state.unlockedMedals[k]).length;
+
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '20px sans-serif';
+        ctx.fillText('CERTIFICADO CONCEDIDO AO AGENTE DIGITAL:', 225, 215);
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 46px sans-serif';
+        ctx.fillText(name, 225, 274);
+
+        ctx.fillStyle = '#4ade80';
+        ctx.font = 'bold 22px sans-serif';
+        ctx.fillText('Patente: ' + rank + '  |  ' + state.xp + ' XP', 225, 324);
+
+        // Footer
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(64, 435);
+        ctx.lineTo(936, 435);
+        ctx.stroke();
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '18px sans-serif';
+        ctx.fillText('Medalhas desbloqueadas: ' + medalCount + '/6  ·  Segurança e Cidadania Digital', 64, 480);
+        ctx.fillText(new Date().toLocaleDateString('pt-BR'), 830, 480);
+
+        const link = document.createElement('a');
+        link.download = 'certificado-guardiao-digital.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        playSfx('xp');
+      }
+
+      /* =========================================================
+         10. GLOBAL WIRING & INITIALIZATION
+         ========================================================= */
+      function initGlobalControls() {
+        document.querySelectorAll('.mission-tab').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            playSfx('click');
+            switchMission(tab.dataset.mission);
+          });
+        });
+
+        document.querySelectorAll('[data-go-mission]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            playSfx('click');
+            switchMission(btn.dataset.goMission);
+          });
+        });
+
+        document.getElementById('btnStartTraining').addEventListener('click', () => {
+          playSfx('click');
+          switchMission(1);
+        });
+
+        document.getElementById('btnJumpRadar').addEventListener('click', () => {
+          playSfx('click');
+          switchMission(2);
+        });
+
+        document.getElementById('btnMedalsJump').addEventListener('click', () => {
+          playSfx('click');
+          const el = document.getElementById('painelMedalhas');
+          const y = el.getBoundingClientRect().top + window.scrollY - 78;
+          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        });
+
+        const soundBtn = document.getElementById('btnSoundToggle');
+        const syncSoundUi = () => {
+          soundBtn.classList.toggle('active', state.soundEnabled);
+          soundBtn.setAttribute('aria-pressed', String(state.soundEnabled));
+          document.getElementById('soundIconOn').style.display = state.soundEnabled ? 'block' : 'none';
+          document.getElementById('soundIconOff').style.display = state.soundEnabled ? 'none' : 'block';
+          document.getElementById('soundLabel').textContent = state.soundEnabled ? 'Som On' : 'Mudo';
+        };
+        syncSoundUi();
+
+        soundBtn.addEventListener('click', () => {
+          state.soundEnabled = !state.soundEnabled;
+          syncSoundUi();
+          if (state.soundEnabled) playSfx('click');
+          saveState();
+        });
+      }
+
+      loadState();
+      initGlobalControls();
+      initMission1();
+      initMission2();
+      initMission3();
+      initMission4();
+      initMission5();
+      updateHud();
+    })();
+  </script>
+</body>
+</html>
